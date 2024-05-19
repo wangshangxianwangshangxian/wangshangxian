@@ -1,0 +1,52 @@
+.w--heading-1 {
+  font-size: var(--font-size-30);
+  line-height: var(--line-height-1p3);
+  letter-spacing: var(--letter-spacing-1);
+  color: var(--color-37352f);
+  font-weight: bold;
+}
+
+.w--heading-2 {
+  font-size: var(--font-size-24);
+  line-height: var(--line-height-1p3);
+  letter-spacing: var(--letter-spacing-1);
+  color: var(--color-37352f);
+  font-weight: bold;
+}
+
+.w--heading-3 {
+  font-size: var(--font-size-20);
+  line-height: var(--line-height-1p3);
+  letter-spacing: var(--letter-spacing-1);
+  color: var(--color-37352f);
+  font-weight: bold;
+}
+
+*,
+.w--text {
+  font-size: var(--font-size-16);
+  line-height: var(--line-height-1p5);
+  letter-spacing: var(--letter-spacing-1);
+  color: var(--color-37352f);
+}
+
+pre,
+.w--code {
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-1p5);
+  letter-spacing: var(--letter-spacing-1);
+  color: var(--color-666666);
+  font-family: var(--font-family-2)
+}
+
+a {
+  color: var(--color-37352f);
+}
+
+a:hover {
+  color: var(--color-lightseagreen);
+  transition-duration: .2s;
+  transition-property: all;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+}

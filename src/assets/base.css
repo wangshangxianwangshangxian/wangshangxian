@@ -1,0 +1,81 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  font-size: 6.25%;
+}
+
+body {
+  width: inherit;
+  height: inherit;
+  font-size: 16rem;
+  font-family: 'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol”';
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+p,
+div,
+input,
+button {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+:root {
+  /* 颜色相关 */
+  --color-lightyellow: lightyellow;
+  --color-red-1: red;
+  --color-37352f: #37352f;
+  --color-666666: #666666;
+  --color-409eff: #409eff;
+  --color-lightseagreen: lightseagreen;
+
+  /* 字体大小 */
+  --font-size-12: 12rem;
+  --font-size-14: 14rem;
+  --font-size-16: 16rem;
+  --font-size-20: 20rem;
+  --font-size-24: 24rem;
+  --font-size-30: 30rem;
+
+  /* 行间距 */
+  --line-height-1: 1;
+  --line-height-1p3: 1.3;
+  --line-height-1p5: 1.5;
+
+  /* 字间距 */
+  --letter-spacing-1: 1;
+
+  /* 圆角 */
+  /* 使用px是因为圆角不管你的分辨率多大，都应该是固定的px */
+  --border-radius-4: 4px;
+  --border-radius-8: 8px;
+
+  /* 阴影 */
+  --box-shadow-1: 0 0 10rem 0rem #ccc;
+
+  /* 字体 */
+  --font-family-2: SFMono-Regular, Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+}
