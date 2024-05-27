@@ -1,65 +1,78 @@
 <template>
-  <div class="blog-box">
-    <Nav></Nav>
-    <div class="blog-content">
-      <component :is="comp"></component>
+  <div class="box">
+    <div class="container">
+      <h1>{{ essay.title }}</h1>
+      <p>{{ essay.create_time }}</p>
+      <div class="content-box w--text">{{ essay.content }}</div>
+      <footer>
+        <button @click="onHome">🏠 返回主页</button>
+      </footer>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent, onMounted, reactive } from 'vue'
-import Nav from '@/components/Nav.vue'
-import My30YearsOldVue from './blogs/My30YearsOld.vue'
-import HarbinTourVue from './blogs/HarbinTour.vue'
-import TalkAboutThePhilosophyOfReactAndVueVue from './blogs/TalkAboutThePhilosophyOfReactAndVue.vue'
-import BreadthRatherThanDepthVue from './blogs/BreadthRatherThanDepth.vue'
-import UseStaticTypesInJavaScriptVue from './blogs/UseStaticTypesInJavaScript.vue'
-import WatchingSoraVideosRandomThoughts from './blogs/WatchingSoraVideosRandomThoughts.vue'
-import DoingWhatHeavenHasOrdainedWithDiligence from './blogs/DoingWhatHeavenHasOrdainedWithDiligence.vue'
-import Web3Experience from './blogs/Web3Experience.vue'
+import { reactive } from 'vue';
+import store from '@/stores/store'
+import router from '@/router';
 
-const state = reactive({
-  hash: location.hash
+const essay = reactive({
+  id: '',
+  title: '',
+  create_time: '',
+  content: ''
 })
 
-let comp = loadBlogContent()
-function loadBlogContent() {
-  const id = location.hash.slice(7)
-  switch (id) {
-    case 'my-30-years-old':
-      return My30YearsOldVue
-    case 'harbin-tour':
-      return HarbinTourVue
-    case 'talk-about-the-philosophy-of-React-and-Vue':
-      return TalkAboutThePhilosophyOfReactAndVueVue
-    case 'breadth-rather-than-depth':
-      return BreadthRatherThanDepthVue
-    case 'use-static-types-in-JavaScript':
-      return UseStaticTypesInJavaScriptVue
-    case 'watching-sora-videos-random-thoughts':
-      return WatchingSoraVideosRandomThoughts
-    case 'web3-experience':
-      return Web3Experience
-    case 'doing-what-heaven-has-ordained-with-diligence':
-      return DoingWhatHeavenHasOrdainedWithDiligence
-  }
+
+const blog_id = location.hash.split("?")[0].replace("#/blog/", '')
+const { id, title, create_time } = store.getEssayInfo(blog_id) || {}
+
+essay.id = id
+essay.title = title
+essay.create_time = create_time
+
+const file_path = `src/stores/${id}.txt`
+fetch(file_path).then(resp => resp.text()).then(content => {
+  essay.content = content
+})
+
+
+const onHome = () => {
+  router.push('/')
 }
-
-onMounted(() => {
-  window.scrollTo(0, 0)
-})
 </script>
 
 <style scoped>
-.blog-box {
-  position: relative;
+.box {}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16rem;
 }
 
-.blog-content {
-  margin: 48rem auto 0 auto;
-  background-color: #fff;
-  max-width: 732rem;
-  padding: 0 16rem 44rem 16rem;
+h1 {
+  font-size: 20rem;
+}
+
+/* .container > p {
+  font-size: 14rem;
+} */
+
+.container {
+  max-width: 900rem;
+  margin: 0 auto;
+  padding: 80rem 16rem;
+  /* background-color: aliceblue; */
+}
+
+.container>div {
+  line-height: 2;
+  letter-spacing: 1.3rem;
+  white-space: pre-wrap;
+}
+
+.content-box {
+  min-height: 100vh;
 }
 </style>
