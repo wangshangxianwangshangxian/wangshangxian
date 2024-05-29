@@ -1,11 +1,12 @@
 <template>
   <div class="box">
     <div class="container">
-      <h1>{{ essay.title }}</h1>
-      <p>{{ essay.create_time }}</p>
-      <div class="content-box w--text">{{ essay.content }}</div>
+      <h1 :contenteditable="caneEdit" @input="onessayedit">{{ essay.title }}</h1>
+      <p :contenteditable="caneEdit" @input="ontimeedit">{{ essay.create_time }}</p>
+      <div class="content-box w--text" :contenteditable="caneEdit" @blur="oncontentedit" v-html="essay.content"></div>
       <footer>
-        <button @click="onHome">🏠 返回主页</button>
+        <button @click="onHome">🏠 返回王尚贤的主页</button>
+        <button v-if="caneEdit" @click="oneditok">🌂 确定编辑完毕！</button>
       </footer>
     </div>
   </div>
@@ -13,32 +14,66 @@
 
 <script setup>
 import { reactive } from 'vue';
-import store from '@/stores/store'
 import router from '@/router';
+import { post } from '@/utils/network';
+import axios from 'axios';
+
+const getUrlParam = (key) => {
+  return location.hash
+    ?.split('?')[1]
+    ?.split('&')
+    ?.find((t) => t.split('=')[0] === key)
+    ?.split('=')[1]
+}
+
+const edit = getUrlParam('edit')
+const caneEdit = edit === 'true'
 
 const essay = reactive({
-  id: '',
-  title: '',
-  create_time: '',
-  content: ''
+  no         : location.hash.replace('#/blog/', '').split('?')[0],
+  title      : caneEdit ? 'title' : '',
+  create_time: caneEdit ? '0000-00-00 00:00:00' : '',
+  content    : caneEdit ? 'content' : ''
 })
 
+const get_essay = () => {
+  const url = `https://env-00jxgnx7m729.dev-hz.cloudbasefunction.cn/get-essay?no=${essay.no}`
+  axios.get(url).then(resp => resp.data).then(resp => {
+    if (resp.code === 0) {
+      essay.no = resp.data.no
+      essay.title = resp.data.title
+      essay.create_time = resp.data.create_time
+      essay.content = resp.data.content
+    }
+  })
+}
 
-const blog_id = location.hash.split("?")[0].replace("#/blog/", '')
-const { id, title, create_time } = store.getEssayInfo(blog_id) || {}
-
-essay.id = id
-essay.title = title
-essay.create_time = create_time
-
-const file_path = `src/stores/${id}.txt`
-fetch(file_path).then(resp => resp.text()).then(content => {
-  essay.content = content
-})
-
+get_essay()
 
 const onHome = () => {
   router.push('/')
+}
+
+const oneditok = () => {
+  const url = 'https://env-00jxgnx7m729.dev-hz.cloudbasefunction.cn/edit-essay'
+  post(url, essay).then(resp => {
+    console.log(resp)
+    if (resp.code === 0) {
+      alert('ok!')
+    }
+  })
+}
+
+const onessayedit = e => {
+  essay.title = e.target.textContent
+}
+
+const ontimeedit = e => {
+  essay.create_time = e.target.textContent
+}
+
+const oncontentedit = e => {
+  essay.content = e.target.innerHTML
 }
 </script>
 
@@ -53,6 +88,7 @@ const onHome = () => {
 
 h1 {
   font-size: 20rem;
+  outline: none;
 }
 
 /* .container > p {
@@ -74,5 +110,10 @@ h1 {
 
 .content-box {
   min-height: 100vh;
+}
+
+footer {
+  display: flex;
+  gap: 20rem;
 }
 </style>
