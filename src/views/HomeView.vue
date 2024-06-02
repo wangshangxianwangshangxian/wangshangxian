@@ -3,12 +3,13 @@
     <div class="box font-serif">
       <div class="h-dvh flex flex-col justify-center items-center">
         <p class="text-2xl">王尚贤</p>
-        <p class="text-sm">🐟 1994年在深圳长大的惠州人</p>
+        <p class="text-sm">🔗 <a href="https://www.wangshangxian.com">wangshangxian.com</a></p>
         <p class="text-sm">💬 讲普通话，但更爱用粤语交流</p>
+        <p class="text-sm">😄 在深圳长大的惠州人，1994年来到地球</p>
         <p class="text-sm">⌨️ 写代码很酷，它不仅仅是工作，更是爱好</p>
         <p class="text-sm">🚗 理想的生活是旅居，驾驶在路上</p>
-        <p class="text-sm">🍣 每个人的人生剧本都不同，演好它即可</p>
-        <p class="text-sm">🔥 极简主义</p>
+        <p class="text-sm">🍣 每个人的人生剧本都不同，纵情演好它</p>
+        <p class="text-sm">🌎 极简主义</p>
         <p class="text-sm">🏄 <a class="link-gov" target="_blank" href="https://beian.miit.gov.cn">粤ICP备2024180655号-1</a></p>
       </div>
       <ul class="flex flex-col">
