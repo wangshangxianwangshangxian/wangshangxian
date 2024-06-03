@@ -606,6 +606,10 @@ video {
   height: 100dvh;
 }
 
+.cursor-auto {
+  cursor: auto;
+}
+
 .flex-col {
   flex-direction: column;
 }

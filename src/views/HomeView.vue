@@ -5,11 +5,11 @@
         <p class="text-2xl">王尚贤</p>
         <p class="text-sm">🔗 <a href="https://www.wangshangxian.com">wangshangxian.com</a></p>
         <p class="text-sm">💬 讲普通话，但更爱用粤语交流</p>
-        <p class="text-sm">😄 在深圳长大的惠州人，1994年来到地球</p>
-        <p class="text-sm">⌨️ 写代码很酷，它不仅仅是工作，更是爱好</p>
-        <p class="text-sm">🚗 理想的生活是旅居，驾驶在路上</p>
-        <p class="text-sm">🍣 每个人的人生剧本都不同，纵情演好它</p>
-        <p class="text-sm">🌎 极简主义</p>
+        <p class="text-sm" @click="onclickedit(5)">😄 在深圳长大的惠州人，1994年来到地球</p>
+        <p class="text-sm" @click="onclickedit(4)">⌨️ 写代码很酷，它不仅仅是工作，更是爱好</p>
+        <p class="text-sm" @click="onclickedit(3)">🚗 理想的生活是旅居，驾驶在路上</p>
+        <p class="text-sm" @click="onclickedit(2)">🍣 每个人的人生剧本都不同，纵情演好它</p>
+        <p class="text-sm" @click="onclickedit(1)">🌎 极简主义</p>
         <p class="text-sm">🏄 <a class="link-gov" target="_blank" href="https://beian.miit.gov.cn">粤ICP备2024180655号-1</a></p>
       </div>
       <ul class="flex flex-col">
@@ -49,6 +49,19 @@ const onkeydown = event => {
     nextTick(() => {
       edit_mode.value && new_mood.value.focus()
     })
+  }
+}
+
+let edit_passwords = []
+const onclickedit = step => {
+  console.log(step)
+  edit_passwords.push(step)
+  const password = edit_passwords.slice(-5).join('')
+  if (password === '12345') {
+    edit_mode.value = true
+  }
+  else if (password === '54321') {
+    edit_mode.value = false
   }
 }
 
