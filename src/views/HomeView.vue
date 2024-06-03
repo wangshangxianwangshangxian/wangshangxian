@@ -6,7 +6,7 @@
         <p class="text-sm">🔗 <a href="https://www.wangshangxian.com">wangshangxian.com</a></p>
         <p class="text-sm">💬 讲普通话，但更爱用粤语交流</p>
         <p class="text-sm" @click="onclickedit(5)">😄 在深圳长大的惠州人，1994年来到地球</p>
-        <p class="text-sm" @click="onclickedit(4)">⌨️ 写代码很酷，它不仅仅是工作，更是爱好</p>
+        <p class="text-sm" @click="onclickedit(4)">⌨️ 写代码很酷，它不仅仅是工作，更是伙伴</p>
         <p class="text-sm" @click="onclickedit(3)">🚗 理想的生活是旅居，驾驶在路上</p>
         <p class="text-sm" @click="onclickedit(2)">🍣 每个人的人生剧本都不同，纵情演好它</p>
         <p class="text-sm" @click="onclickedit(1)">🌎 极简主义</p>
@@ -17,7 +17,8 @@
           <div class="flex justify-between">
             <p>{{ this_time }}</p>
             <div class="flex gap-x-3" v-show="edit_mode">
-              <button @click="on_add_mood" class="bg-green-300 px-2 rounded hover:bg-green-400">sure</button>
+              <span v-if="edit_loading">loading</span>
+              <button :disabled="edit_loading" @click="on_add_mood" class="bg-green-300 px-2 rounded hover:bg-green-400 disabled:cursor-not-allowed">sure</button>
             </div>
           </div>
           <div :contenteditable="edit_mode" ref="new_mood" class="outline-none" v-html="new_mood_value" @blur="on_new_mood_blur"></div>
@@ -26,8 +27,9 @@
           <div class="flex justify-between">
             <p>{{ item.create_time }}</p>
             <div class="flex gap-x-3" v-show="edit_mode === true">
-              <button class="bg-red-300 px-2 rounded hover:bg-red-400" @click="on_del_mood(item)">delete</button>
-              <button @click="on_update_mood(item)" class="bg-green-300 px-2 rounded hover:bg-green-400">sure</button>
+              <span v-if="edit_loading">loading</span>
+              <button :disabled="edit_loading" class="bg-red-300 px-2 rounded hover:bg-red-400 disabled:cursor-not-allowed" @click="on_del_mood(item)">delete</button>
+              <button :disabled="edit_loading" @click="on_update_mood(item)" class="bg-green-300 px-2 rounded hover:bg-green-400 disabled:cursor-not-allowed">sure</button>
             </div>
           </div>
           <div :contenteditable="edit_mode" class="outline-none" v-html="item.content" @blur="e => item.content = e.target.innerHTML"></div>
@@ -43,6 +45,7 @@ import { nextTick, onMounted, onUnmounted, reactive, ref } from 'vue';
 
 const edit_mode = ref(false)
 const new_mood = ref(null)
+const edit_loading = ref(false)
 const onkeydown = event => {
   if (event.ctrlKey && event.shiftKey && event.key === 'P') {
     edit_mode.value = !edit_mode.value
@@ -54,7 +57,6 @@ const onkeydown = event => {
 
 let edit_passwords = []
 const onclickedit = step => {
-  console.log(step)
   edit_passwords.push(step)
   const password = edit_passwords.slice(-5).join('')
   if (password === '12345') {
@@ -67,7 +69,6 @@ const onclickedit = step => {
 
 onMounted(() => {
   window.addEventListener('keydown', onkeydown)
-  
 })
 
 onUnmounted(() => {
@@ -77,7 +78,9 @@ onUnmounted(() => {
 const set_mood = (no, create_time, content) => {
   const url = 'https://env-00jxgnx7m729.dev-hz.cloudbasefunction.cn/set-mood'
   const data = { no, create_time, content }
+  edit_loading.value = true
   axios.post(url, data).then(resp => resp.data).then(resp => {
+    edit_loading.value = false
     if (resp.code !== 0) {
       alert(resp.message)
       return
@@ -159,13 +162,14 @@ const on_del_mood = info => {
   const data = {
     no_list: [info.no]
   }
+  edit_loading.value = true
   axios.post(url, data).then(resp => resp.data).then(resp => {
+    edit_loading.value = false
     if (resp.code !== 0) {
       alert(resp.message)
       return
     }
 
-    alert('ok!')
     const index = moods.findIndex(info => info.no === info.no)
     moods.splice(index)
   })
@@ -191,7 +195,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', onscroll)
 })
-
 </script>
 
 <style scoped>
