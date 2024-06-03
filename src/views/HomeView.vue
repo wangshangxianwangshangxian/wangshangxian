@@ -17,7 +17,7 @@
           <div class="flex justify-between">
             <p>{{ this_time }}</p>
             <div class="flex gap-x-3" v-show="edit_mode">
-              <button @click="on_add_mood" class="bg-green-200 px-2 rounded hover:bg-green-400">sure</button>
+              <button @click="on_add_mood" class="bg-green-300 px-2 rounded hover:bg-green-400">sure</button>
             </div>
           </div>
           <div :contenteditable="edit_mode" ref="new_mood" class="outline-none" v-html="new_mood_value" @blur="on_new_mood_blur"></div>
@@ -26,8 +26,8 @@
           <div class="flex justify-between">
             <p>{{ item.create_time }}</p>
             <div class="flex gap-x-3" v-show="edit_mode === true">
-              <button @click="on_update_mood(item)" class="bg-green-200 px-2 rounded hover:bg-green-400">sure</button>
-              <button class="bg-red-200 px-2 rounded hover:bg-red-400" @click="on_del_mood(item)">delete</button>
+              <button class="bg-red-300 px-2 rounded hover:bg-red-400" @click="on_del_mood(item)">delete</button>
+              <button @click="on_update_mood(item)" class="bg-green-300 px-2 rounded hover:bg-green-400">sure</button>
             </div>
           </div>
           <div :contenteditable="edit_mode" class="outline-none" v-html="item.content" @blur="e => item.content = e.target.innerHTML"></div>
