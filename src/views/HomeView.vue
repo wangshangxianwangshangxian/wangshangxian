@@ -18,7 +18,7 @@
             <p>{{ this_time }}</p>
             <div class="flex gap-x-3" v-show="edit_mode">
               <span v-if="edit_loading">loading</span>
-              <button :disabled="edit_loading" @click="on_add_mood" class="bg-green-300 px-2 rounded hover:bg-green-400 disabled:cursor-not-allowed">sure</button>
+              <button :disabled="edit_loading" @click="on_add_mood" class="bg-green-500 px-2 rounded hover:bg-green-600 disabled:cursor-not-allowed text-white">submit</button>
             </div>
           </div>
           <div :contenteditable="edit_mode" ref="new_mood" class="outline-none" v-html="new_mood_value" @blur="on_new_mood_blur"></div>
@@ -28,8 +28,8 @@
             <p>{{ item.create_time }}</p>
             <div class="flex gap-x-3" v-show="edit_mode === true">
               <span v-if="edit_loading">loading</span>
-              <button :disabled="edit_loading" class="bg-red-300 px-2 rounded hover:bg-red-400 disabled:cursor-not-allowed" @click="on_del_mood(item)">delete</button>
-              <button :disabled="edit_loading" @click="on_update_mood(item)" class="bg-green-300 px-2 rounded hover:bg-green-400 disabled:cursor-not-allowed">sure</button>
+              <button :disabled="edit_loading" class="disabled:cursor-not-allowed text-red-500 hover:bg-gray-300 px-2 rounded" @click="on_del_mood(item)">delete</button>
+              <button :disabled="edit_loading" @click="on_update_mood(item)" class="bg-green-500 px-2 rounded hover:bg-green-600 disabled:cursor-not-allowed text-white">submit</button>
             </div>
           </div>
           <div :contenteditable="edit_mode" class="outline-none" v-html="item.content" @blur="e => item.content = e.target.innerHTML"></div>
@@ -145,7 +145,12 @@ const on_new_mood_blur = e => {
 
 
 const moods = reactive([])
+const mood_loading = ref(false)
 const get_moods = (start, end) => {
+  if (mood_loading.value === true) {
+    return
+  }
+  mood_loading.value = true
   const url = `https://env-00jxgnx7m729.dev-hz.cloudbasefunction.cn/get-mood-list?start=${start}&end=${end}`
   axios.get(url).then(resp => resp.data).then(resp => {
     if (resp.code !== 0) {
@@ -154,6 +159,9 @@ const get_moods = (start, end) => {
     }
 
     moods.push(...resp.data)
+  })
+  .finally(() => {
+    mood_loading.value = false
   })
 }
 
@@ -183,7 +191,6 @@ const on_del_mood = info => {
 const onscroll = e => {
   const { scrollHeight, scrollTop, clientHeight } = e.target.scrollingElement
   if (scrollTop + clientHeight >= scrollHeight) {
-    console.log('touch the bottom')
     const start = moods.length
     const end = start + 10
     get_moods(start, end)
