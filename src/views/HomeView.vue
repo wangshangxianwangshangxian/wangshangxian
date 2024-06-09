@@ -40,8 +40,8 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { nextTick, onMounted, onUnmounted, reactive, ref } from 'vue';
+import axios from 'axios'
+import { nextTick, onMounted, onUnmounted, reactive, ref } from 'vue'
 
 const edit_mode = ref(false)
 const new_mood = ref(null)
@@ -158,6 +158,10 @@ const get_moods = (start, end) => {
 }
 
 const on_del_mood = info => {
+  const flag = confirm(`Are you sure to delete this mood:\n\n${info.content.slice(0, 17).padEnd(20, '...')}`)
+  if (!flag) {
+    return
+  }
   const url = 'https://env-00jxgnx7m729.dev-hz.cloudbasefunction.cn/del-moods'
   const data = {
     no_list: [info.no]
