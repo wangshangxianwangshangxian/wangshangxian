@@ -12,7 +12,7 @@
         <p class="text-sm" @click="onclickedit(1)">🌎 极简主义</p>
         <p class="text-sm">🏄 <a class="link-gov" target="_blank" href="https://beian.miit.gov.cn">粤ICP备2024180655号-1</a></p>
       </div>
-      <ul class="flex flex-col">
+      <ul class="flex flex-col min-h-screen">
         <li class="hover:bg-sky-50 px-4 py-8 rounded" v-if="edit_mode">
           <div class="flex justify-between">
             <p>{{ this_time }}</p>
